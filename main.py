@@ -110,13 +110,46 @@ def delete_expense():
         print("An error occurred while reading/writing the file. Please check if 'expenses.txt' exists or file permissions.")
 
 
+# Function to summarize expenses - Bonus Feature
+def summarize_expenses():
+    with open('expenses.txt', 'r') as file:
+        total = 0
+        category_totals = {}
+        for line in file:
+            category, amount, description = line.strip().split(', ')
+            amount = float(amount)
+            total += amount
+            category_totals[category] = category_totals.get(category, 0) + amount
+
+        print(f"Total Expenses: {total}")
+        print("Expenses by Category:")
+        for category, amount in category_totals.items():
+            print(f"{category}: {amount}")
+    
+    # Error handling to be added
+
+
+# Function to search expenses by description - Bonus Feature
+def search_expenses():
+    search_term = input("Enter a search term: ")
+    with open('expenses.txt', 'r') as file:
+        for line in file:
+            category, amount, description = line.strip().split(', ')
+            if search_term in description:
+                print(f"Category: {category}, Amount: {amount}, Description: {description}")
+
+    # Error handling to be added
+
+
 # Main loop for the program
 while True:
     print("\n***** Expense Tracker *****\n")
     print("1. Add an expense")
     print("2. View expenses")
     print("3. Delete an expense")
-    print("4. Quit")
+    print("4. Summarize expenses")
+    print("5. Search expense by description")
+    print("6. Quit")
     choice = input("Enter your choice: ")
 
     if choice == "1":
@@ -126,6 +159,10 @@ while True:
     elif choice == "3":
         delete_expense()
     elif choice == "4":
+        summarize_expenses()
+    elif choice == "5":
+        search_expenses()
+    elif choice == "6":
         print("Goodbye!")
         break
     else:
