@@ -1,16 +1,20 @@
+# List of expense categories
 categories = ["Housing", "Utilities", "Insurance", "Food and Grocery", "Transportation", "Personal",\
                          "Savings", "Others"]
 
 
+# Function to print expense categories
 def print_categories() -> None:
     for i in range(len(categories)):
         print(str(i + 1) + ". " + categories[i])
-    
-        
+
+
+# Function to add an expense
 def add_expense() -> None:
     print("Which category does your expense belong to?\n")
     print_categories()
 
+    # Try-catch for valid input
     while True:
         try:
             category_num = int(input("Enter the number according to the category: "))
@@ -23,6 +27,7 @@ def add_expense() -> None:
 
     category = categories[category_num - 1]
 
+    # Try-catch for valid input
     while True:
         try:
             amount = float(input("Enter the amount: "))
@@ -35,6 +40,8 @@ def add_expense() -> None:
 
     description = input("Enter a brief description: ")
 
+    
+    # Write the expense to the 'expenses.txt' file
     try:
         with open('expenses.txt', 'a') as file:
             file.write(f"{category}, {amount}, {description}\n")
@@ -43,6 +50,7 @@ def add_expense() -> None:
         print("An error occurred while writing to the file. Please check file permissions or file existence.")
 
 
+# Function to view expenses
 def view_expenses():
     print_categories()
     category_num = input("Enter a category number to filter (leave empty to show all): ")
@@ -61,12 +69,15 @@ def view_expenses():
                 for line in file:
                     category, amount, description = line.strip().split(', ')
                     print(f"Category: {category}, Amount: {amount}, Description: {description}")
+
+    # Errors catching
     except (ValueError, IndexError):
         print("Invalid input. Please enter a valid category number.")
     except IOError:
         print("An error occurred while reading the file. Please check if 'expenses.txt' exists.")
 
 
+# Function to delete an expense
 def delete_expense():
     try:
         with open('expenses.txt', 'r') as file:
@@ -78,6 +89,7 @@ def delete_expense():
         for i, expense in enumerate(expenses):
             print(f"{i + 1}. {expense.strip()}")
         while True:
+            # Try-catch for valid input
             try:
                 choice = int(input("Enter the number of the expense to delete: "))
                 if 1 <= choice <= len(expenses):
@@ -92,10 +104,13 @@ def delete_expense():
                 if i + 1 != choice:
                     file.write(expense)
         print("Expense deleted!\n")
+
+    # File I/O error catching
     except IOError:
         print("An error occurred while reading/writing the file. Please check if 'expenses.txt' exists or file permissions.")
 
 
+# Main loop for the program
 while True:
     print("\n***** Expense Tracker *****\n")
     print("1. Add an expense")
